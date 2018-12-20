@@ -13,5 +13,6 @@ Third line : the response sequence.
     0,1,1,1,1,1,0,0,1,1,1,1,1,0,0
  ```
  
- if you do not have student ID in your data, please use student_data.py to identify student anonymously with random numbers. 
+ if you do not have student ID in your data, please use student_data.py to identify student anonymously with random numbers.
+ We found some bugs in codes. So the result may be a bit different as described in our ICDM paper but it is still efficient than all other models compared. More efficient models are comming soon. 
  
