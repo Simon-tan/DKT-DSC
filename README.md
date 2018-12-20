@@ -8,7 +8,7 @@ Second line : the skill tag sequence.
 Third line : the response sequence.
 
  ```
-    15
+    15,1
     1,1,1,1,7,7,9,10,10,10,10,11,11,45,54
     0,1,1,1,1,1,0,0,1,1,1,1,1,0,0
  ```
