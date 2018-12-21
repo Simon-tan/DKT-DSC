@@ -308,7 +308,7 @@ def run_epoch(session, m, students, max_stu, cluster, run_type, eval_op, verbose
           if (len(problem_ids)>limit):
              for i in range(m.batch_size):
                  for j in range(m.num_steps):                     
-                     current_indx= j                  
+                     current_indx= i*j                  
                      target_indx = current_indx+1
                      seg_id= target_indx//FLAGS.problem_len
                                     
