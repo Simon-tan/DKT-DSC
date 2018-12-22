@@ -69,7 +69,6 @@ class StudentModel(object):
         
         self.current = tf.placeholder(tf.int32, [batch_size, num_steps], name='current')  
         self.next = tf.placeholder(tf.int32, [batch_size, num_steps], name='next')
-        self.sr = tf.placeholder(tf.int32, [batch_size, num_steps], name='sr')        
         
         self._target_id = target_id = tf.placeholder(tf.int32, [None])
         self._target_correctness = target_correctness = tf.placeholder(tf.float32, [None])
@@ -110,17 +109,7 @@ class StudentModel(object):
             slice_x_data = tf.split(x_data, num_steps, 1)
             
             
-        sr = tf.reshape(self.sr, [-1])    
-        with tf.device("/cpu:0"):
-            labels = tf.expand_dims(sr, 1)
-       	    indices = tf.expand_dims(tf.range(0, batch_size*num_steps, 1), 1)
-            concated = tf.concat([indices, labels],1)
-            sr = tf.sparse_to_dense(concated, tf.stack([batch_size*num_steps, sr_size]), 1.0, 0.0)
-            sr.set_shape([batch_size*num_steps, sr_size])
-            sr_data = tf.reshape(sr, [batch_size, num_steps, sr_size])
-            slice_sr_data = tf.split(sr_data, num_steps, 1)
-            
-        
+               
         
         input_embed_l = []
         for i in range(num_steps):             
@@ -128,7 +117,7 @@ class StudentModel(object):
             x = tf.squeeze(slice_x_data[i], 1)
             sr = tf.squeeze(slice_sr_data[i], 1)
             
-            t1= tf.concat([c,x,sr], 1)
+            t1= tf.concat([c,x], 1)
             input_embed_l.append(t1)
             
             
@@ -281,14 +270,12 @@ def run_epoch(session, m, students, max_stu, cluster, run_type, eval_op, verbose
        limit=5  
        
        
-    xtotal = np.ones((max_stu,m.num_skills+1))
-    x1 = np.ones((max_stu,m.num_skills+1))
-    x0 = np.ones((max_stu,m.num_skills+1))  
+      
     
     while(index < len(students)):
           x = np.zeros((m.batch_size, m.num_steps))
           c = np.zeros((m.batch_size, m.num_steps))
-          sr = np.zeros((m.batch_size, m.num_steps))
+          
           
           target_ids = []
           target_correctness = [] 
@@ -324,22 +311,21 @@ def run_epoch(session, m, students, max_stu, cluster, run_type, eval_op, verbose
                         label_index = 0
                         correct = int(correctness[current_indx])
                         
-                        xtotal[student_id,current_id] +=1
+                        
                         
                         
                         if target_id > 0:
                            if( correct == 0):
                               label_index = current_id
-                              x0[student_id,current_id] +=1
+                              
                               
                            else:
                                 label_index =(current_id + m.num_skills)
-                                x1[student_id,current_id] +=1
+                               
                                 
                                 
                            c[i, j] = label_index
                            x[i, j] = target_id                           
-                           sr[i,j] = np.rint(x1[student_id,target_id]/xtotal[student_id,target_id])+1
                            burffer_space=i*m.num_steps*(FLAGS.num_cluster+1)+j*(FLAGS.num_cluster+1)
                            t_ind=burffer_space+ int(cluster_id)
                            target_ids.append(t_ind)                        
@@ -350,7 +336,7 @@ def run_epoch(session, m, students, max_stu, cluster, run_type, eval_op, verbose
           index += 1
                     
           pred, _, all_logits = session.run([m.pred, eval_op, m.all_logits], feed_dict={
-            m.current: c, m.next: x, m.sr: sr, m.target_id: target_ids, m.target_correctness: target_correctness})
+            m.current: c, m.next: x, m.target_id: target_ids, m.target_correctness: target_correctness})
             
           
           for i, p in enumerate(pred):
