@@ -300,7 +300,7 @@ def run_epoch(session, m, students, max_stu, cluster, run_type, eval_op, verbose
                      seg_id= target_indx//FLAGS.problem_len
                                     
                      if (seg_id>0 and seg_id< max_seg):
-                        cluster_id= cluster[student_id,(seg_id)]+2
+                        cluster_id= cluster[student_id,(seg_id)]+1
                      else:
                           cluster_id= 1
                      
