@@ -19,6 +19,8 @@ Third line : the response sequence.
  Dynamic student classification on memory networks for knowledge tracing
  
  https://ink.library.smu.edu.sg/sis_research/4347/
+ 
+ 
  https://github.com/simon-tan/DSCMN
  
  
