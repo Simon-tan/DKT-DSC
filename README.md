@@ -14,6 +14,11 @@ Third line : the response sequence.
  ```
  
  if you do not have student ID in your data, please use student_data.py to identify student anonymously with random numbers.
- We found some bugs in code. So the result has discrepancy as described in our ICDM paper but it is still better than all other models compared when we integrate problem difficulty. I will update it later. More efficient models are comming soon. 
+ We found some bugs in code. So the result has discrepancy as described in our ICDM paper but it is still better than all other models compared when we integrate problem difficulty. For more efficient model and refined result of DKT-DSC, please see our PAKDD 2019 paper: 
+ 
+ Dynamic student classification on memory networks for knowledge tracing 
+ https://github.com/simon-tan/DSCMN
+ 
+ 
  
 if you have further questions, please do not hesitate to contact me: sein.minn.cs@gmail.com
